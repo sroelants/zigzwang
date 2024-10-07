@@ -1,6 +1,10 @@
 const std = @import("std");
 const Square = @import("square.zig").Square;
 
+/// A struct representing a set of board squares.
+///
+/// Internally represented as a u64, so it allows for easy set operations (by
+/// doing bitwise AND/OR on the inner `val` field.
 pub const Bitboard = struct {
     val: u64,
 

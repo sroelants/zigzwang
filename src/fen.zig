@@ -6,6 +6,9 @@ const CastlingRights = @import("castling.zig").CastlingRights;
 const Board = @import("board.zig").Board;
 const Bitboard = @import("bitboard.zig").Bitboard;
 
+/// Parse a fen string into a Board struct
+///
+/// Returns an error on invalid FEN strings
 pub fn parseFen(fen: []const u8) !Board {
     var board = Board.empty();
     var parts = std.mem.splitScalar(u8, fen, ' ');
