@@ -4,6 +4,7 @@ const Piece = @import("piece.zig").Piece;
 const Square = @import("square.zig").Square;
 const CastlingRights = @import("castling.zig").CastlingRights;
 const Board = @import("board.zig").Board;
+const Bitboard = @import("bitboard.zig").Bitboard;
 
 pub fn parseFen(fen: []const u8) !Board {
     var board = Board.empty();
@@ -11,10 +12,34 @@ pub fn parseFen(fen: []const u8) !Board {
 
     // Parse board
     const board_str = parts.next().?;
-    var rows = std.mem.splitScalar(u8, board_str, '/');
 
+    // Iterate the fen string backwards, because idx 0 is bottom-left for us.
+    var rows = std.mem.splitBackwardsScalar(u8, board_str, '/');
+
+    // Start at the bottom-left, at index 0.
+    var sq_idx: usize = 0;
+
+    // Parse rows
     while (rows.next()) |row| {
-        std.debug.print("{s}\n", .{row});
+        for (row) |ch| {
+            if (Piece.parse(ch)) |piece| {
+                std.debug.print("Square idx is now: {}\n", .{sq_idx});
+                const sq: Square = Square.from_idx(sq_idx).?;
+                const bb = sq.bb();
+                const ptype = piece.piece_type();
+                const color = piece.color();
+
+                board.bbs[ptype.idx()].val |= bb.val;
+                board.occupied[color.idx()].val |= bb.val;
+                sq_idx += 1;
+            } else |_| {}
+
+            const str: [1]u8 = .{ch};
+
+            if (std.fmt.parseUnsigned(u6, &str, 10)) |gap| {
+                sq_idx += gap;
+            } else |_| {}
+        }
     }
 
     // Parse stm
