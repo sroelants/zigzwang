@@ -1,4 +1,4 @@
-pub const Color = enum {
+pub const Color = enum(u1) {
     white,
     black,
 
@@ -11,9 +11,13 @@ pub const Color = enum {
             else => error.IllegalColorString,
         };
     }
+
+    pub fn idx(self: Color) usize {
+        return @intFromEnum(self);
+    }
 };
 
-pub const Piece = enum {
+pub const Piece = enum(u4) {
     // zig fmt: off
     wp, bp, wn, bn, wb, bb, wr, br, wq, bq, wk, bk,
     // zig fmt: on
@@ -37,10 +41,28 @@ pub const Piece = enum {
             else => error.IllegalPieceString,
         };
     }
+
+    pub fn idx(self: Piece) usize {
+        return @intFromEnum(self);
+    }
+
+    pub fn piece_type(piece: Piece) PieceType {
+        const ptype_idx = @as(u3, @intCast(@intFromEnum(piece) >> 1));
+        return @enumFromInt(ptype_idx);
+    }
+
+    pub fn color(piece: Piece) Color {
+        const color_idx = @as(u1, @intCast(@intFromEnum(piece) & 1));
+        return @enumFromInt(color_idx);
+    }
 };
 
-pub const PieceType = enum {
+pub const PieceType = enum(u3) {
     // zig fmt: off
-    pawn, knight, bishop, rook, queen, king 
+    pawn, knight, bishop, rook, queen, king,
     // zig fmt: on
+    //
+    pub fn idx(self: PieceType) usize {
+        return @intFromEnum(self);
+    }
 };

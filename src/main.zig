@@ -7,7 +7,9 @@ const CastlingRights = @import("./castling.zig").CastlingRights;
 const Piece = @import("./piece.zig").Piece;
 
 pub fn main() !void {
-    _ = fen.parseFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    const board = try fen.parseFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+
+    std.debug.print("{}", .{board});
 }
 
 test "parse piece" {
