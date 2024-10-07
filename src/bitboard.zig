@@ -12,6 +12,18 @@ pub const Bitboard = struct {
         return .{ .val = 0 };
     }
 
+    pub fn _and(self: Bitboard, rhs: Bitboard) Bitboard {
+        return .{ .val = self.val & rhs.val };
+    }
+
+    pub fn _or(self: Bitboard, rhs: Bitboard) Bitboard {
+        return .{ .val = self.val | rhs.val };
+    }
+
+    pub fn _not(self: Bitboard) Bitboard {
+        return .{ .val = self.val.not() };
+    }
+
     /// Format a bitboard
     pub fn format(
         self: Bitboard,
