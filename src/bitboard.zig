@@ -12,6 +12,10 @@ pub const Bitboard = struct {
         return .{ .val = 0 };
     }
 
+    pub fn fromInt(value: u64) Bitboard {
+        return .{ .val = value };
+    }
+
     pub fn _and(self: Bitboard, rhs: Bitboard) Bitboard {
         return .{ .val = self.val & rhs.val };
     }
@@ -22,6 +26,10 @@ pub const Bitboard = struct {
 
     pub fn _not(self: Bitboard) Bitboard {
         return .{ .val = self.val.not() };
+    }
+
+    pub fn equals(self: Bitboard, other: Bitboard) bool {
+        return self.val == other.val;
     }
 
     /// Format a bitboard
